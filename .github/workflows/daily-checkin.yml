@@ -3,7 +3,7 @@ name: Daily Checkin
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'  # 每天UTC时间的0:00执行
+    - cron: '0 0 * * *'
 
 jobs:
   checkin:
@@ -19,19 +19,23 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          node-version: '14'
+          python-version: '3.8'
 
       - name: Install dependencies
-        run: npm install  # 如果你的签到脚本依赖于 Node.js 包，可以在这里安装依赖
+        run: pip install -r requirements.txt  # 如果有依赖需要安装，请添加相应的命令
 
       - name: Run Daily Checkin
         run: |
-          # 在这里添加运行签到脚本的命令
-          # 例如：node checkin_script.js
+          python main.py
         env:
           EMAIL: ${{ secrets.EMAIL }}
           PASSWORD: ${{ secrets.PASSWORD }}
           BASE_URL: ${{ secrets.BASE_URL }}
+          SCKEY: ${{ secrets.SCKEY }}
+
+      - name: Notify Server酱
+        if: ${{ secrets.SCKEY != '' }}
+        run: curl -sS -X POST "https://sc.ftqq.com/${{ secrets.SCKEY }}.send" -d "text=GitHub Actions Daily Checkin&desp=Checkin result: ${{ job.status }}"
