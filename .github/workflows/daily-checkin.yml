@@ -13,6 +13,7 @@ jobs:
       EMAIL: ${{ secrets.EMAIL }}
       PASSWORD: ${{ secrets.PASSWORD }}
       BASE_URL: ${{ secrets.BASE_URL }}
+      SCKEY: ${{ secrets.SCKEY }}
 
     steps:
       - name: Checkout Repository
