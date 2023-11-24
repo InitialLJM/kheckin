@@ -1,0 +1,36 @@
+name: Daily Checkin
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'  # 每天UTC时间的0:00执行
+
+jobs:
+  checkin:
+    runs-on: ubuntu-latest
+
+    env:
+      EMAIL: ${{ secrets.EMAIL }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      BASE_URL: ${{ secrets.BASE_URL }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install  # 如果你的签到脚本依赖于 Node.js 包，可以在这里安装依赖
+
+      - name: Run Daily Checkin
+        run: |
+          # 在这里添加运行签到脚本的命令
+          # 例如：node checkin_script.js
+        env:
+          EMAIL: ${{ secrets.EMAIL }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          BASE_URL: ${{ secrets.BASE_URL }}
