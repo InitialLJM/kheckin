@@ -30,14 +30,6 @@ jobs:
       - name: Run Daily Checkin
         run: |
           python main.py
-        env:
-          EMAIL: ${{ secrets.EMAIL }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-          BASE_URL: ${{ secrets.BASE_URL }}
-          SCKEY: ${{ secrets.SCKEY }}
-
-      - name: Notify Server酱
-        if: ${{ secrets.SCKEY != '' }}
-        run: curl -sS -X POST "https://sc.ftqq.com/${{ secrets.SCKEY }}.send" -d "text=GitHub Actions Daily Checkin&desp=Checkin result: ${{ job.status }}"
+      
 
         
